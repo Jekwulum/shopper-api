@@ -5,7 +5,7 @@ import {Timestamp} from '../generated/google/protobuf/Timestamp';
 import UserModel, {IUser} from "../models/user.model";
 
 // convert a Mongoose user document to a gRPC User object
-const toGrpcUser = (user: any): GrpcUser => {
+export const toGrpcUser = (user: any): GrpcUser => {
   const toTimestamp = (date: Date): Timestamp => ({
     seconds: Math.floor(date.getTime() / 1000),
     nanos: (date.getTime() % 1000) * 1e6
