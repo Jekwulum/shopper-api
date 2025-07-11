@@ -1,0 +1,12 @@
+[submodule "user_service/proto"]
+	path = user_service/proto
+	url = https://github.com/Jekwulum/shopper-protos
+[submodule "product_service/proto"]
+	path = product_service/proto
+	url = https://github.com/Jekwulum/shopper-protos
+[submodule "order_service/proto"]
+	path = order_service/proto
+	url = https://github.com/Jekwulum/shopper-protos
+[submodule "notification_service/proto"]
+	path = notification_service/proto
+	url = https://github.com/Jekwulum/shopper-protos

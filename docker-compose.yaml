@@ -10,6 +10,8 @@ services:
     depends_on:
       - product_service
       - order_service
+      - notification_service
+      - user_service
 
   product_service:
     build:
@@ -28,3 +30,20 @@ services:
       - "5002:5002" # REST
       - "50052:50052" # gRPC
     restart: on-failure
+
+  notification_service:
+    build:
+      context: ./notification_service
+      dockerfile: Dockerfile
+    ports:
+      - "5003:5003" # REST
+      - "50053:50053" # gRPC
+    restart: on-failure
+
+  user_service:
+    build:
+      context: ./user_service
+      dockerfile: Dockerfile
+    ports:
+        - "5004:5004" # REST
+        - "50054:50054" # gRPC
