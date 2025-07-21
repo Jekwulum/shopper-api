@@ -6,7 +6,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon --watch src --exec ts-node src/server.ts",
     "build": "tsc --project .",
-    "start": "node dist/server.js"
+    "start": "node dist/server.js",
+    "proto:gen": "./generate_proto.sh"
   },
   "keywords": [],
   "author": "",
@@ -20,6 +21,8 @@
     "ts-node": "^10.9.2"
   },
   "devDependencies": {
+    "@grpc/grpc-js": "^1.13.4",
+    "@grpc/proto-loader": "^0.7.15",
     "@types/cors": "^2.8.18",
     "@types/express": "^5.0.1",
     "@types/mongoose": "^5.11.96",
