@@ -1,11 +1,40 @@
-from flask import Flask, jsonify
+import sys
+import os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), 'generated')))
 
-port = 5001
+import grpc
+from dotenv import load_dotenv
+from flask import Flask, jsonify
+from concurrent import futures
+from app.db import init_db
+from app.grpc_server import ProductService
+from app.routes import routes
+from generated.product import product_pb2_grpc
+
+load_dotenv()
+
+port = 5009
 app = Flask(__name__)
+
+init_db(app)
+app.register_blueprint(routes)
 
 @app.route('/health', methods=['GET'])
 def health_check():
     return jsonify({"status": "Product service is running ✅"}), 200
 
-if __name__ == '__main__':
+def start_flask():
     app.run(host='0.0.0.0', port=port)
+
+def start_grpc():
+    server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
+    product_pb2_grpc.add_ProductServiceServicer_to_server(ProductService(), server)
+    server.add_insecure_port('localhost:50051')
+    server.start()
+    print("[User-service]: gRPC server started on port 50051 ✅")
+
+
+if __name__ == '__main__':
+    from threading import Thread
+    Thread(target=start_grpc).start()
+    start_flask()
