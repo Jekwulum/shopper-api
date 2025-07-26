@@ -13,7 +13,7 @@ from generated.product import product_pb2_grpc
 
 load_dotenv()
 
-port = 5009
+port = 5001
 app = Flask(__name__)
 
 init_db(app)
@@ -31,7 +31,7 @@ def start_grpc():
     product_pb2_grpc.add_ProductServiceServicer_to_server(ProductService(), server)
     server.add_insecure_port('localhost:50051')
     server.start()
-    print("[User-service]: gRPC server started on port 50051 ✅")
+    print("[Product-service]: gRPC server started on port 50051 ✅")
 
 
 if __name__ == '__main__':

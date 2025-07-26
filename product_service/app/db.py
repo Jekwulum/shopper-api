@@ -21,4 +21,4 @@ def init_db(app):
     db.init_app(app)
     with app.app_context():
         db.create_all()
-    print("[User-service]: Database initialized and tables created successfully. ✅")
+    print("[Product-service]: Database initialized and tables created successfully. ✅")
