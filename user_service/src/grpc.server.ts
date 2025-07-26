@@ -7,7 +7,7 @@ import {ProtoGrpcType as AuthProtoGrpcType} from './generated/auth';
 import AuthHandler from "./handlers/auth.handler";
 import UserHandler from "./handlers/user.handler";
 
-const GRPC_PORT = process.env.GRPC_PORT || '50054';
+const GRPC_PORT = process.env.GRPC_PORT || 50054;
 const PROTO_FILE = '../proto/user/user.proto';
 const AUTH_PROTO_FILE = '../proto/user/auth.proto';
 

@@ -1,4 +1,4 @@
-import sys
+﻿import sys
 import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), 'generated')))
 
@@ -8,6 +8,7 @@ from flask import Flask, jsonify
 from concurrent import futures
 from app.db import init_db
 from app.grpc_server import ProductService
+from app.middleware import auth_middleware
 from app.routes import routes
 from generated.product import product_pb2_grpc
 
@@ -17,6 +18,7 @@ port = 5001
 app = Flask(__name__)
 
 init_db(app)
+auth_middleware(app)
 app.register_blueprint(routes)
 
 @app.route('/health', methods=['GET'])
@@ -29,7 +31,7 @@ def start_flask():
 def start_grpc():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     product_pb2_grpc.add_ProductServiceServicer_to_server(ProductService(), server)
-    server.add_insecure_port('localhost:50051')
+    server.add_insecure_port('0.0.0.0:50051')
     server.start()
     print("[Product-service]: gRPC server started on port 50051 ✅")
 

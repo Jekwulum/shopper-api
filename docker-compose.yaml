@@ -1,4 +1,9 @@
 version: '3'
+
+networks:
+  shopper-network:
+    driver: bridge
+
 services:
   nginx:
     image: nginx:latest
@@ -8,10 +13,13 @@ services:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./nginx:/usr/share/nginx/html:ro 
     depends_on:
-      - product_service
       - order_service
       - notification_service
       - user_service
+      - product_service
+    restart: always
+    networks:
+      - shopper-network
 
   product_service:
     build:
@@ -21,6 +29,10 @@ services:
       - "5001:5001" # REST
       - "50051:50051" # gRPC
     restart: on-failure
+    depends_on:
+      - user_service
+    networks:
+      - shopper-network
     
   order_service:
     build:
@@ -30,6 +42,11 @@ services:
       - "5002:5002" # REST
       - "50052:50052" # gRPC
     restart: on-failure
+    depends_on:
+      - user_service
+      - product_service
+    networks:
+      - shopper-network
 
   notification_service:
     build:
@@ -39,6 +56,8 @@ services:
       - "5003:5003" # REST
       - "50053:50053" # gRPC
     restart: on-failure
+    networks:
+      - shopper-network
 
   user_service:
     build:
@@ -47,3 +66,5 @@ services:
     ports:
         - "5004:5004" # REST
         - "50054:50054" # gRPC
+    networks:
+      - shopper-network
