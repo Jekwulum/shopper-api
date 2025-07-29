@@ -13,5 +13,10 @@ export interface ProtoGrpcType {
     VerifyTokenRequest: MessageTypeDefinition
     VerifyTokenResponse: MessageTypeDefinition
   }
+  google: {
+    protobuf: {
+      Timestamp: MessageTypeDefinition
+    }
+  }
 }
 

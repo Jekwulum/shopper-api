@@ -18,7 +18,7 @@ class Product(db.Model):
     def to_proto(self):
         """Convert the Product instance to a protobuf representation."""
         return product_pb2.Product(
-            id=self.id,
+            id=str(self.id),
             name=self.name,
             description=self.description,
             price=self.price,

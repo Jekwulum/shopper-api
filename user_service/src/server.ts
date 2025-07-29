@@ -6,7 +6,6 @@ import dotenv from 'dotenv';
 import router from './routes';
 import {startGrpcServer} from './grpc.server';
 
-
 dotenv.config();
 
 const PORT: number = 5004;
@@ -26,7 +25,7 @@ app.use(router);
 app.listen(PORT, () => {
   mongoose.connect(process.env.MONGO_URI as string)
     .then(() => console.log('[User-service]: Connected to MongoDB successfully ✅'))
-    .catch(err => console.error('[User-service]: Failed to connect to MongoDB:', err));
-  console.log(`[User-service]: User service is running on port ${PORT} ✅`);
+    .catch((err) => console.error('[User-service]: Failed to connect to MongoDB: ', err));
   startGrpcServer();
+  console.log(`[User-service]: User service is running on port ${PORT} ✅`);
 });

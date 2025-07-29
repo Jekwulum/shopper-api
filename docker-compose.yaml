@@ -28,6 +28,13 @@ services:
     ports:
       - "5001:5001" # REST
       - "50051:50051" # gRPC
+#    healthcheck:
+#      test: ["CMD", "curl", "-f", "http://localhost:5001/health"]
+    healthcheck:
+      test: [ "CMD", "nc", "-z", "localhost", "50051" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     restart: on-failure
     depends_on:
       - user_service
@@ -56,6 +63,10 @@ services:
       - "5003:5003" # REST
       - "50053:50053" # gRPC
     restart: on-failure
+    depends_on:
+      - order_service
+      - user_service
+      - product_service
     networks:
       - shopper-network
 

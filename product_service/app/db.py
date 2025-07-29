@@ -13,12 +13,16 @@ driver = 'ODBC+Driver+18+for+SQL+Server'
 
 connection_string = f'mssql+pyodbc://{username}:{password}@{server}:1433/{database}?driver={driver}'
 
+
 def init_db(app):
     """Initialize the database connection and create tables if they do not exist."""
     app.config['SQLALCHEMY_DATABASE_URI'] = connection_string
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-    db.init_app(app)
-    with app.app_context():
-        db.create_all()
-    print("[Product-service]: Database initialized and tables created successfully. ✅")
+    
+    try:
+        db.init_app(app)
+        with app.app_context():
+            db.create_all()
+            print("Database initialized and tables created successfully. ✅")
+    except Exception as e:
+        print(f"Error initializing database: {e} ❌")
