@@ -47,7 +47,7 @@ def update_product(id):
         return jsonify({"status": "FAILED", "message": "Product not found"}), 404
     
     try:
-        for key, value in request.json().items():
+        for key, value in request.json.items():
             setattr(product, key, value)
         db.session.commit()
         return jsonify({"status": "SUCCESS", "data": product.to_dict()}), 200

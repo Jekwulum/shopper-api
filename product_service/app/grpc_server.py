@@ -81,7 +81,6 @@ class ProductService(product_pb2_grpc.ProductServiceServicer):
         increase or decrease.
         data ->{items: {"id": 1, "quantity": 10}, {"id": 2, "quantity": 5}, status: "increase"}
         """
-        print('----------------------arrived here-------------------------------------')
         with self.app.app_context():
             try:
                 for item in request.items:
