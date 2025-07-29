@@ -1,6 +1,6 @@
 import {Request, Response} from "express";
 import {OrderModel} from "../models/order.model";
-import {getProduct} from "../grpc/product.client";
+import {getProduct, updateProductsQuantity} from "../grpc/product.client";
 import {getUser} from "../grpc/user.client";
 import {orderStatuses} from "../constants";
 import {asyncHandler} from "../auth";
@@ -92,6 +92,21 @@ const OrderController = {
 
       if (!order) {
         return res.status(404).json({status: 'FAILED', message: "Order not found"});
+      }
+
+      // if status is completed, update the product-service to decrease the quantity of a particular product in order.items
+      if (status === orderStatuses.COMPLETED) {
+        const productUpdates = order.items.map(item => ({
+          id: item.productId,
+          quantity: item.quantity, // Decrease the quantity
+        }));
+
+        try {
+          await updateProductsQuantity(productUpdates, status);
+        } catch (error) {
+          console.error("Error updating product quantities:", error);
+          return res.status(500).json({message: "Failed to update product quantities"});
+        }
       }
 
       return res.status(200).json({data: order, status: 'SUCCESS', message: 'Order status updated successfully'});

@@ -24,7 +24,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x15product/product.proto\x12\x07product\"Y\n\x07Product\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12\r\n\x05price\x18\x04 \x01(\x01\x12\x10\n\x08quantity\x18\x05 \x01(\x05\"W\n\x11\x41\x64\x64ProductRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x02 \x01(\t\x12\r\n\x05price\x18\x03 \x01(\x01\x12\x10\n\x08quantity\x18\x04 \x01(\x05\"\x1f\n\x11GetProductRequest\x12\n\n\x02id\x18\x01 \x01(\t\"f\n\x14UpdateProductRequest\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12\r\n\x05price\x18\x04 \x01(\x01\x12\x10\n\x08quantity\x18\x05 \x01(\x05\"4\n\x0fProductResponse\x12!\n\x07product\x18\x01 \x01(\x0b\x32\x10.product.Product\"9\n\x13ProductListResponse\x12\"\n\x08products\x18\x01 \x03(\x0b\x32\x10.product.Product\"\x07\n\x05\x45mpty2\xa0\x02\n\x0eProductService\x12\x42\n\nAddProduct\x12\x1a.product.AddProductRequest\x1a\x18.product.ProductResponse\x12\x42\n\nGetProduct\x12\x1a.product.GetProductRequest\x1a\x18.product.ProductResponse\x12<\n\x0cListProducts\x12\x0e.product.Empty\x1a\x1c.product.ProductListResponse\x12H\n\rUpdateProduct\x12\x1d.product.UpdateProductRequest\x1a\x18.product.ProductResponseb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x15product/product.proto\x12\x07product\"Y\n\x07Product\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12\r\n\x05price\x18\x04 \x01(\x01\x12\x10\n\x08quantity\x18\x05 \x01(\x05\"W\n\x11\x41\x64\x64ProductRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x02 \x01(\t\x12\r\n\x05price\x18\x03 \x01(\x01\x12\x10\n\x08quantity\x18\x04 \x01(\x05\"\x1f\n\x11GetProductRequest\x12\n\n\x02id\x18\x01 \x01(\t\"f\n\x14UpdateProductRequest\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12\r\n\x05price\x18\x04 \x01(\x01\x12\x10\n\x08quantity\x18\x05 \x01(\x05\"4\n\x0fProductResponse\x12!\n\x07product\x18\x01 \x01(\x0b\x32\x10.product.Product\"9\n\x13ProductListResponse\x12\"\n\x08products\x18\x01 \x03(\x0b\x32\x10.product.Product\"$\n\x04Item\x12\n\n\x02id\x18\x01 \x01(\t\x12\x10\n\x08quantity\x18\x02 \x01(\x05\"M\n\x1dUpdateProductsQuantityRequest\x12\x1c\n\x05items\x18\x01 \x03(\x0b\x32\r.product.Item\x12\x0e\n\x06status\x18\x02 \x01(\t\"\x07\n\x05\x45mpty2\xfc\x02\n\x0eProductService\x12\x42\n\nAddProduct\x12\x1a.product.AddProductRequest\x1a\x18.product.ProductResponse\x12\x42\n\nGetProduct\x12\x1a.product.GetProductRequest\x1a\x18.product.ProductResponse\x12<\n\x0cListProducts\x12\x0e.product.Empty\x1a\x1c.product.ProductListResponse\x12H\n\rUpdateProduct\x12\x1d.product.UpdateProductRequest\x1a\x18.product.ProductResponse\x12Z\n\x16UpdateProductsQuantity\x12&.product.UpdateProductsQuantityRequest\x1a\x18.product.ProductResponseb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -43,8 +43,12 @@ if not _descriptor._USE_C_DESCRIPTORS:
   _globals['_PRODUCTRESPONSE']._serialized_end=403
   _globals['_PRODUCTLISTRESPONSE']._serialized_start=405
   _globals['_PRODUCTLISTRESPONSE']._serialized_end=462
-  _globals['_EMPTY']._serialized_start=464
-  _globals['_EMPTY']._serialized_end=471
-  _globals['_PRODUCTSERVICE']._serialized_start=474
-  _globals['_PRODUCTSERVICE']._serialized_end=762
+  _globals['_ITEM']._serialized_start=464
+  _globals['_ITEM']._serialized_end=500
+  _globals['_UPDATEPRODUCTSQUANTITYREQUEST']._serialized_start=502
+  _globals['_UPDATEPRODUCTSQUANTITYREQUEST']._serialized_end=579
+  _globals['_EMPTY']._serialized_start=581
+  _globals['_EMPTY']._serialized_end=588
+  _globals['_PRODUCTSERVICE']._serialized_start=591
+  _globals['_PRODUCTSERVICE']._serialized_end=971
 # @@protoc_insertion_point(module_scope)

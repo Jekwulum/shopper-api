@@ -23,3 +23,15 @@ export function getProduct(productId: string): Promise<any> {
     });
   });
 }
+
+export function updateProductsQuantity(items: { id: string; quantity: number }[], status: string): Promise<any> {
+  return new Promise((resolve, reject) => {
+    productClient.UpdateProductsQuantity({items, status}, (err, response) => {
+      if (err) {
+        console.error("Error updating products quantity:", err);
+        return reject(err);
+      }
+      resolve(response);
+    });
+  });
+}

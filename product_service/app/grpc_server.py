@@ -74,3 +74,26 @@ class ProductService(product_pb2_grpc.ProductServiceServicer):
                 context.set_details(str(e))
                 context.set_code(grpc.StatusCode.INTERNAL)
                 return product.to_proto()
+    
+    def UpdateProductsQuantity(self, request, context):
+        """
+        using a list of dict of product IDs and quantities, update their quantity in the database based on status:
+        increase or decrease.
+        data ->{items: {"id": 1, "quantity": 10}, {"id": 2, "quantity": 5}, status: "increase"}
+        """
+        print('----------------------arrived here-------------------------------------')
+        with self.app.app_context():
+            try:
+                for item in request.items:
+                    product = Product.query.get(item.id)
+                    if product:
+                        if request.status == "completed":
+                            product.quantity += item.quantity
+                    db.session.commit()
+                
+                updated_products = [product.to_proto() for item in request.items for product in Product.query.filter_by(id=item.id).all()]
+                return product_pb2.ProductListResponse(products=updated_products)
+            except Exception as e:
+                context.set_details(str(e))
+                context.set_code(grpc.StatusCode.INTERNAL)
+                return product_pb2.ProductListResponse()

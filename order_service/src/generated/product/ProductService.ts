@@ -8,6 +8,7 @@ import type { GetProductRequest as _product_GetProductRequest, GetProductRequest
 import type { ProductListResponse as _product_ProductListResponse, ProductListResponse__Output as _product_ProductListResponse__Output } from '../product/ProductListResponse';
 import type { ProductResponse as _product_ProductResponse, ProductResponse__Output as _product_ProductResponse__Output } from '../product/ProductResponse';
 import type { UpdateProductRequest as _product_UpdateProductRequest, UpdateProductRequest__Output as _product_UpdateProductRequest__Output } from '../product/UpdateProductRequest';
+import type { UpdateProductsQuantityRequest as _product_UpdateProductsQuantityRequest, UpdateProductsQuantityRequest__Output as _product_UpdateProductsQuantityRequest__Output } from '../product/UpdateProductsQuantityRequest';
 
 export interface ProductServiceClient extends grpc.Client {
   AddProduct(argument: _product_AddProductRequest, metadata: grpc.Metadata, options: grpc.CallOptions, callback: grpc.requestCallback<_product_ProductResponse__Output>): grpc.ClientUnaryCall;
@@ -46,6 +47,15 @@ export interface ProductServiceClient extends grpc.Client {
   updateProduct(argument: _product_UpdateProductRequest, options: grpc.CallOptions, callback: grpc.requestCallback<_product_ProductResponse__Output>): grpc.ClientUnaryCall;
   updateProduct(argument: _product_UpdateProductRequest, callback: grpc.requestCallback<_product_ProductResponse__Output>): grpc.ClientUnaryCall;
   
+  UpdateProductsQuantity(argument: _product_UpdateProductsQuantityRequest, metadata: grpc.Metadata, options: grpc.CallOptions, callback: grpc.requestCallback<_product_ProductResponse__Output>): grpc.ClientUnaryCall;
+  UpdateProductsQuantity(argument: _product_UpdateProductsQuantityRequest, metadata: grpc.Metadata, callback: grpc.requestCallback<_product_ProductResponse__Output>): grpc.ClientUnaryCall;
+  UpdateProductsQuantity(argument: _product_UpdateProductsQuantityRequest, options: grpc.CallOptions, callback: grpc.requestCallback<_product_ProductResponse__Output>): grpc.ClientUnaryCall;
+  UpdateProductsQuantity(argument: _product_UpdateProductsQuantityRequest, callback: grpc.requestCallback<_product_ProductResponse__Output>): grpc.ClientUnaryCall;
+  updateProductsQuantity(argument: _product_UpdateProductsQuantityRequest, metadata: grpc.Metadata, options: grpc.CallOptions, callback: grpc.requestCallback<_product_ProductResponse__Output>): grpc.ClientUnaryCall;
+  updateProductsQuantity(argument: _product_UpdateProductsQuantityRequest, metadata: grpc.Metadata, callback: grpc.requestCallback<_product_ProductResponse__Output>): grpc.ClientUnaryCall;
+  updateProductsQuantity(argument: _product_UpdateProductsQuantityRequest, options: grpc.CallOptions, callback: grpc.requestCallback<_product_ProductResponse__Output>): grpc.ClientUnaryCall;
+  updateProductsQuantity(argument: _product_UpdateProductsQuantityRequest, callback: grpc.requestCallback<_product_ProductResponse__Output>): grpc.ClientUnaryCall;
+  
 }
 
 export interface ProductServiceHandlers extends grpc.UntypedServiceImplementation {
@@ -57,6 +67,8 @@ export interface ProductServiceHandlers extends grpc.UntypedServiceImplementatio
   
   UpdateProduct: grpc.handleUnaryCall<_product_UpdateProductRequest__Output, _product_ProductResponse>;
   
+  UpdateProductsQuantity: grpc.handleUnaryCall<_product_UpdateProductsQuantityRequest__Output, _product_ProductResponse>;
+  
 }
 
 export interface ProductServiceDefinition extends grpc.ServiceDefinition {
@@ -64,4 +76,5 @@ export interface ProductServiceDefinition extends grpc.ServiceDefinition {
   GetProduct: MethodDefinition<_product_GetProductRequest, _product_ProductResponse, _product_GetProductRequest__Output, _product_ProductResponse__Output>
   ListProducts: MethodDefinition<_product_Empty, _product_ProductListResponse, _product_Empty__Output, _product_ProductListResponse__Output>
   UpdateProduct: MethodDefinition<_product_UpdateProductRequest, _product_ProductResponse, _product_UpdateProductRequest__Output, _product_ProductResponse__Output>
+  UpdateProductsQuantity: MethodDefinition<_product_UpdateProductsQuantityRequest, _product_ProductResponse, _product_UpdateProductsQuantityRequest__Output, _product_ProductResponse__Output>
 }

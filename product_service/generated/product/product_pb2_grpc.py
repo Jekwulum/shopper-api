@@ -54,6 +54,11 @@ class ProductServiceStub(object):
                 request_serializer=product_dot_product__pb2.UpdateProductRequest.SerializeToString,
                 response_deserializer=product_dot_product__pb2.ProductResponse.FromString,
                 _registered_method=True)
+        self.UpdateProductsQuantity = channel.unary_unary(
+                '/product.ProductService/UpdateProductsQuantity',
+                request_serializer=product_dot_product__pb2.UpdateProductsQuantityRequest.SerializeToString,
+                response_deserializer=product_dot_product__pb2.ProductResponse.FromString,
+                _registered_method=True)
 
 
 class ProductServiceServicer(object):
@@ -83,6 +88,12 @@ class ProductServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def UpdateProductsQuantity(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_ProductServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -104,6 +115,11 @@ def add_ProductServiceServicer_to_server(servicer, server):
             'UpdateProduct': grpc.unary_unary_rpc_method_handler(
                     servicer.UpdateProduct,
                     request_deserializer=product_dot_product__pb2.UpdateProductRequest.FromString,
+                    response_serializer=product_dot_product__pb2.ProductResponse.SerializeToString,
+            ),
+            'UpdateProductsQuantity': grpc.unary_unary_rpc_method_handler(
+                    servicer.UpdateProductsQuantity,
+                    request_deserializer=product_dot_product__pb2.UpdateProductsQuantityRequest.FromString,
                     response_serializer=product_dot_product__pb2.ProductResponse.SerializeToString,
             ),
     }
@@ -214,6 +230,33 @@ class ProductService(object):
             target,
             '/product.ProductService/UpdateProduct',
             product_dot_product__pb2.UpdateProductRequest.SerializeToString,
+            product_dot_product__pb2.ProductResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def UpdateProductsQuantity(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/product.ProductService/UpdateProductsQuantity',
+            product_dot_product__pb2.UpdateProductsQuantityRequest.SerializeToString,
             product_dot_product__pb2.ProductResponse.FromString,
             options,
             channel_credentials,
