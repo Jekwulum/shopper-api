@@ -1,6 +1,7 @@
 import {Request, Response} from "express";
 import {OrderModel} from "../models/order.model";
 import {getProduct} from "../grpc/product.client";
+import {getUser} from "../grpc/user.client";
 import {orderStatuses} from "../constants";
 import {asyncHandler} from "../auth";
 
@@ -43,13 +44,19 @@ const OrderController = {
   getOrder: asyncHandler(async (req: Request, res: Response) => {
     try {
       const {id} = req.params;
-      const order = await OrderModel.findOne({_id: id});
+      const order = await OrderModel.findOne({_id: id}).lean();
 
       if (!order) {
         return res.status(404).json({status: 'FAILED', message: "Order not found"});
       }
 
-      return res.status(200).json({data: order, status: 'SUCCESS', message: 'Order retrieved successfully'});
+      // fetch user data from user-service using order.userId
+      const user = await getUser(order.userId);
+      const { createdAt, updatedAt, ...userInfo } = user;
+      const {userId, ...data} = order;
+
+      const responseData = {...data, user: userInfo};
+      return res.status(200).json({data: responseData, status: 'SUCCESS', message: 'Order retrieved successfully'});
     } catch (error) {
       console.error("Error fetching order:", error);
       return res.status(500).json({message: "Internal server error"});
