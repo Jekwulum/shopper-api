@@ -24,7 +24,7 @@ const OrderController = {
         items.map(async ({productId, quantity}) => {
           const product = await getProduct(productId);
           return {
-            productId: product._id,
+            productId: product.id,
             quantity,
             name: product.name,
             price: product.price,
