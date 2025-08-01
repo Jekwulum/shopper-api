@@ -13,10 +13,10 @@ services:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./nginx:/usr/share/nginx/html:ro 
     depends_on:
-      - order_service
       - notification_service
       - user_service
       - product_service
+      - order_service
     restart: always
     networks:
       - shopper-network

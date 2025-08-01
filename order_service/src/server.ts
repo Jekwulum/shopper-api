@@ -28,5 +28,4 @@ app.listen(PORT, () => {
     .then(() => console.log('[Order-service]: Connected to MongoDB successfully ✅'))
     .catch((err) => console.error('[Order-service]: Failed to connect to MongoDB: ', err));
   startGrpcServer();
-  console.log(`Order Service is running on port ${PORT} ✅`);
 });

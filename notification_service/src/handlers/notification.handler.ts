@@ -1,6 +1,6 @@
 import * as grpc from '@grpc/grpc-js';
-import {NotificationServiceHandlers} from "../generated/notificationPackage/NotificationService";
 import {sendEmail} from "../send.email";
+import {socketConnection} from "../socket";
 import {orderStatuses, notificationTypes} from "../constants";
 import NotificationModel from "../models/notification.model";
 import {sendUnaryData, ServerUnaryCall} from "@grpc/grpc-js";
@@ -26,11 +26,18 @@ const NotificationHandler: {
     ? 'Your order has been cancelled.' : 'Your order has been completed.';
 
     try {
-      const notif = await NotificationModel.create({ userId, type, message });
+      await NotificationModel.create({ userId, type, message });
       const html = `<p>${message}</p>`;
-      await sendEmail(email, `Order ${status}`, html);
 
-      global.io.to(userId).emit('notification', notif);
+      const [unreadNotificationsCount, notifications] = await Promise.all([
+        NotificationModel.countDocuments({ userId, isRead: false }),
+        NotificationModel.find({ userId }).sort({ createdAt: -1 }),
+      ])
+
+      socketConnection.io?.emit('unread-notifications', { userId, count: unreadNotificationsCount });
+      socketConnection.io?.emit('notifications', notifications);
+
+      await sendEmail(email, `Order ${status}`, html);
 
       callback(null, { success: true });
     } catch (error) {
@@ -55,11 +62,17 @@ const NotificationHandler: {
     }
 
     try {
-      const notif = await NotificationModel.create({ userId, type, message });
+      await NotificationModel.create({ userId, type, message });
       const html = `<p>${message}</p>`;
       await sendEmail(email, 'Welcome!', html);
+      ;
+      const [unreadNotificationsCount, notifications] = await Promise.all([
+        NotificationModel.countDocuments({ userId, isRead: false }),
+        NotificationModel.find({ userId }).sort({ createdAt: -1 }),
+      ])
 
-      global.io.to(userId).emit('notification', notif);
+      socketConnection.io?.emit('unread-notifications', { userId, count: unreadNotificationsCount });
+      socketConnection.io?.emit('notifications', notifications);
 
       callback(null, { success: true });
     } catch (error) {

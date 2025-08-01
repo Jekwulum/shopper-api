@@ -17,7 +17,6 @@ const app: Express = express();
 const server: http.Server = http.createServer(app);
 
 const io = new SocketIoServer(server, {cors: {origin: '*'}});
-global.io = io;
 initializeSocket(io);
 
 app.use(express.json());

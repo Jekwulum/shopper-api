@@ -18,7 +18,7 @@ class SocketConnection {
   }
 }
 
-const socketConnection = new SocketConnection(null);
+export const socketConnection = new SocketConnection(null);
 
 const socketAuth = async (socket: CustomSocket, next: (err?: Error) => void) => {
   let token = socket.handshake.headers.authorization;

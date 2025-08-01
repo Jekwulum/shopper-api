@@ -1,4 +1,4 @@
-import mongoose, {Document, Schema, Model} from 'mongoose';
+import mongoose, {Document, Model, Schema} from 'mongoose';
 import bcrypt from "bcryptjs";
 
 export interface IUser extends Document {
@@ -7,6 +7,7 @@ export interface IUser extends Document {
   password: string;
   firstName: string;
   lastName: string;
+
   validatePassword(password: string): Promise<boolean>;
 }
 
