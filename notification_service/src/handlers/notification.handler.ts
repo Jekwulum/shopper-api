@@ -12,7 +12,7 @@ import {generateWelcomeEmail} from "../emailTemplates/welcome.template";
 
 const NotificationHandler: {
   NotifyOrderStatus: (call: ServerUnaryCall<OrderStatusRequest, NotificationResponse>, callback: sendUnaryData<NotificationResponse>) => Promise<void>;
-  NotifyWelcomeEmail: (call: ServerUnaryCall<WelcomeRequest, NotificationResponse>, callback: sendUnaryData<NotificationResponse>) => Promise<void>
+  NotifyWelcome: (call: ServerUnaryCall<WelcomeRequest, NotificationResponse>, callback: sendUnaryData<NotificationResponse>) => Promise<void>
 } = {
   NotifyOrderStatus: async (call, callback) => {
     const { userId, email, status, firstName, lastName, orderId } = call.request;
@@ -51,7 +51,7 @@ const NotificationHandler: {
     }
   },
 
-  NotifyWelcomeEmail: async (call, callback) => {
+  NotifyWelcome: async (call, callback) => {
     const { userId, email, firstName, lastName } = call.request;
     const type = notificationTypes.WELCOME;
     const message = 'Welcome to our service! We are glad to have you with us.';

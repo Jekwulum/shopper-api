@@ -38,7 +38,6 @@ const AuthController = {
   },
 
   register: async (req: Request, res: Response): Promise<void> => {
-    console.log('here');
     try {
       const {email, password, firstName, lastName} = req.body;
 
@@ -56,7 +55,7 @@ const AuthController = {
       const newUser = new UserModel(req.body) as IUser;
       await newUser.save();
       // don't await the notification to avoid blocking the response
-      await notifyWelcome({ userId: newUser._id.toString(), email: newUser.email, firstName: newUser.firstName, lastName: newUser.lastName });
+      notifyWelcome({ userId: newUser._id.toString(), email: newUser.email, firstName: newUser.firstName, lastName: newUser.lastName });
 
       const token = AuthController.generateToken(newUser._id.toString());
 
