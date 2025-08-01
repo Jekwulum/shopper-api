@@ -1,9 +1,12 @@
 import {Request, Response} from "express";
-import {OrderModel} from "../models/order.model";
+import {Types} from "mongoose";
+import {IOrder, OrderModel} from "../models/order.model";
 import {getProduct, updateProductsQuantity} from "../grpc/product.client";
 import {getUser} from "../grpc/user.client";
 import {orderStatuses} from "../constants";
 import {asyncHandler} from "../auth";
+import {notifyOrderStatus} from "../grpc/notification.client";
+import {VerifyTokenResponse} from "../generated/authPackage/VerifyTokenResponse";
 
 type CartItem = {
   productId: string;
@@ -44,7 +47,7 @@ const OrderController = {
   getOrder: asyncHandler(async (req: Request, res: Response) => {
     try {
       const {id} = req.params;
-      const order = await OrderModel.findOne({_id: id}).lean();
+      const order: IOrder | null = await OrderModel.findOne({_id: id}).lean<IOrder>();
 
       if (!order) {
         return res.status(404).json({status: 'FAILED', message: "Order not found"});
@@ -52,7 +55,7 @@ const OrderController = {
 
       // fetch user data from user-service using order.userId
       const user = await getUser(order.userId);
-      const { createdAt, updatedAt, ...userInfo } = user;
+      const {createdAt, updatedAt, ...userInfo} = user;
       const {userId, ...data} = order;
 
       const responseData = {...data, user: userInfo};
@@ -88,7 +91,7 @@ const OrderController = {
         {_id: id, status: {$ne: orderStatuses.CANCELLED}},
         {status},
         {new: true}
-      );
+      ).lean() as (IOrder & { _id: Types.ObjectId }) | null;
 
       if (!order) {
         return res.status(404).json({status: 'FAILED', message: "Order not found"});
@@ -108,6 +111,17 @@ const OrderController = {
           return res.status(500).json({message: "Failed to update product quantities"});
         }
       }
+
+            // Notify user about order status change
+      const user: VerifyTokenResponse = req.user!;
+      notifyOrderStatus({
+        orderId: order._id.toString(),
+        status,
+        userId: order.userId,
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user?.lastName,
+      });
 
       return res.status(200).json({data: order, status: 'SUCCESS', message: 'Order status updated successfully'});
     } catch (error) {

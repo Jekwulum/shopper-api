@@ -33,7 +33,7 @@ app.use(router);
 server.listen(PORT, () => {
     mongoose.connect(process.env.MONGO_URI as string)
       .then(() => console.log('[Notification-service] Connected to MongoDB successfully ✅'))
-      .catch((err) => console.error('[Notification-service] Failed to connect to MongoDB: ', err));
+      .catch((err) => console.error('[Notification-service]: Failed to connect to MongoDB: ', err));
     startGrpcServer();
     console.log(`[Notification-service] is running on port ${PORT} ✅`);
 });

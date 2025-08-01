@@ -7,14 +7,16 @@ import {sendUnaryData, ServerUnaryCall} from "@grpc/grpc-js";
 import {OrderStatusRequest} from "../generated/notificationPackage/OrderStatusRequest";
 import {NotificationResponse} from "../generated/notificationPackage/NotificationResponse";
 import {WelcomeRequest} from "../generated/notificationPackage/WelcomeRequest";
+import {generateOrderTemplate} from "../emailTemplates/order.template";
+import {generateWelcomeEmail} from "../emailTemplates/welcome.template";
 
 const NotificationHandler: {
   NotifyOrderStatus: (call: ServerUnaryCall<OrderStatusRequest, NotificationResponse>, callback: sendUnaryData<NotificationResponse>) => Promise<void>;
   NotifyWelcomeEmail: (call: ServerUnaryCall<WelcomeRequest, NotificationResponse>, callback: sendUnaryData<NotificationResponse>) => Promise<void>
 } = {
   NotifyOrderStatus: async (call, callback) => {
-    const { userId, email, status } = call.request;
-    if (!userId || !email || !status) {
+    const { userId, email, status, firstName, lastName, orderId } = call.request;
+    if (!userId || !email || !status || !firstName || !lastName || !orderId) {
       return callback({
         code: grpc.status.INVALID_ARGUMENT,
         message: 'Missing required fields'
@@ -27,12 +29,12 @@ const NotificationHandler: {
 
     try {
       await NotificationModel.create({ userId, type, message });
-      const html = `<p>${message}</p>`;
+      const html = generateOrderTemplate(`${firstName} ${lastName}`, orderId, status);
 
       const [unreadNotificationsCount, notifications] = await Promise.all([
         NotificationModel.countDocuments({ userId, isRead: false }),
         NotificationModel.find({ userId }).sort({ createdAt: -1 }),
-      ])
+      ]);
 
       socketConnection.io?.emit('unread-notifications', { userId, count: unreadNotificationsCount });
       socketConnection.io?.emit('notifications', notifications);
@@ -50,11 +52,11 @@ const NotificationHandler: {
   },
 
   NotifyWelcomeEmail: async (call, callback) => {
-    const { userId, email } = call.request;
+    const { userId, email, firstName, lastName } = call.request;
     const type = notificationTypes.WELCOME;
     const message = 'Welcome to our service! We are glad to have you with us.';
 
-    if (!userId || !email) {
+    if (!userId || !email || !firstName || !lastName) {
       return callback({
         code: grpc.status.INVALID_ARGUMENT,
         message: 'Missing required fields'
@@ -63,9 +65,7 @@ const NotificationHandler: {
 
     try {
       await NotificationModel.create({ userId, type, message });
-      const html = `<p>${message}</p>`;
-      await sendEmail(email, 'Welcome!', html);
-      ;
+
       const [unreadNotificationsCount, notifications] = await Promise.all([
         NotificationModel.countDocuments({ userId, isRead: false }),
         NotificationModel.find({ userId }).sort({ createdAt: -1 }),
@@ -73,6 +73,9 @@ const NotificationHandler: {
 
       socketConnection.io?.emit('unread-notifications', { userId, count: unreadNotificationsCount });
       socketConnection.io?.emit('notifications', notifications);
+
+      const html = generateWelcomeEmail(`${firstName} ${lastName}`);
+      await sendEmail(email, 'Welcome!', html);
 
       callback(null, { success: true });
     } catch (error) {

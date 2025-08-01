@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
 
 import UserModel, {IUser} from '../models/user.model';
+import {notifyWelcome} from "../grpc/notification.client";
 
 dotenv.config();
 const JWT_SECRET = process.env.JWT_SECRET as string;
@@ -54,6 +55,8 @@ const AuthController = {
 
       const newUser = new UserModel(req.body) as IUser;
       await newUser.save();
+      // don't await the notification to avoid blocking the response
+      await notifyWelcome({ userId: newUser._id.toString(), email: newUser.email, firstName: newUser.firstName, lastName: newUser.lastName });
 
       const token = AuthController.generateToken(newUser._id.toString());
 
