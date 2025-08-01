@@ -64,7 +64,7 @@ export const initializeSocket = (io: SocketIoServer) => {
     try {
       const notifications = await NotificationController.GetNotificationsSocket(userId);
       socket.emit('notifications', notifications);
-    } catch(error) {
+    } catch (error) {
       console.error('Error emitting notifications:', error);
     }
 
